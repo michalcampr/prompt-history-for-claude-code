@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>cz.campr.prompt-history</id>
+    <name>Prompt History for Claude Code</name>
+    <vendor url="https://github.com/michalcampr/prompt-history-for-claude-code">Michal Campr</vendor>
+    <description><![CDATA[
+        Tool window with a chronological list of your prompts to Claude Code,
+        each with the first line of Claude's final answer. Shows the session
+        running in the active terminal tab, or all sessions of the project.
+        Unofficial; not affiliated with Anthropic.
+    ]]></description>
+
+    <!-- Following the active terminal tab needs the new terminal module (own classloader). -->
+    <dependencies>
+        <plugin id="com.intellij.modules.platform"/>
+        <plugin id="org.jetbrains.plugins.terminal"/>
+        <module name="intellij.terminal.frontend"/>
+    </dependencies>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Prompt History"
+                    anchor="left"
+                    secondary="true"
+                    icon="AllIcons.Toolwindows.ToolWindowMessages"
+                    factoryClass="cz.campr.prompthistory.HistoryToolWindowFactory"/>
+    </extensions>
+</idea-plugin>
