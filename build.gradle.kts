@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "cz.campr"
-version = "0.3.1"
+version = "0.3.2"
 
 // -PplatformPath=/path/to/ide builds against a locally installed IDE (no download);
 // it can live in ~/.gradle/gradle.properties. Without it, PhpStorm platformVersion is downloaded.

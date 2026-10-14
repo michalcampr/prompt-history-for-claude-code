@@ -125,6 +125,14 @@ class SessionParserTest {
     }
 
     @Test
+    fun `inline markdown in the answer preview is stripped, code and arithmetic stay`() {
+        fun answer(text: String) = parse(user(q("a")), assistantText(text)).turns.single().answer
+        assertEquals("Verdict: MERGE. Fixes for MINOR", answer("**Verdict: MERGE.** Fixes for __MINOR__"))
+        assertEquals("See the docs for `gh auth`", answer("See [the docs](https://x.y/z) for `gh auth`"))
+        assertEquals("2 * 3 = 6", answer("2 * 3 = 6"))
+    }
+
+    @Test
     fun `text blocks of array content are joined, broken lines are ignored`() {
         val s = parse(
             "{nevalidni json",

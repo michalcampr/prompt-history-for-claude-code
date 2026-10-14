@@ -121,9 +121,20 @@ class SessionParser(private val sessionId: String) {
     private fun tag(s: String, name: String): String? =
         Regex("<$name>(.*?)</$name>", RegexOption.DOT_MATCHES_ALL).find(s)?.groupValues?.get(1)?.trim()
 
-    private fun firstLine(text: String): String =
-        text.lineSequence().map { it.trim().trimStart('#', '*', '-', '>', ' ').trimEnd('*') }
+    private fun firstLine(text: String): String {
+        val line = text.lineSequence().map { it.trim().trimStart('#', '*', '-', '>', ' ').trimEnd('*') }
             .firstOrNull { it.isNotEmpty() } ?: text.trim()
+        return stripInlineMarkdown(line)
+    }
+
+    /** Bold and links become plain text; inline `code` (odd segments) is left as is. */
+    private fun stripInlineMarkdown(line: String): String =
+        line.split('`').mapIndexed { i, part ->
+            if (i % 2 == 1) part
+            else part.replace(markdownLink, "$1").replace("**", "").replace("__", "")
+        }.joinToString("`")
+
+    private val markdownLink = Regex("""\[([^\]]+)]\([^)]*\)""")
 
     private fun JsonObject.obj(key: String): JsonObject? =
         get(key)?.takeIf(JsonElement::isJsonObject)?.asJsonObject
