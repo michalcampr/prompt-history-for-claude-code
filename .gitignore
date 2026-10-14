@@ -4,3 +4,4 @@ build/
 .kotlin/
 *.iml
 .intellijPlatform/
+CLAUDE.local.md
